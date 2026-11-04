@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Family - B1+ Assessment</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#035485',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+    <!-- HEADER / BRANDING -->
+    <header class="bg-brand-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- Logo & Brand Header -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/10 p-2.5 rounded-2xl border border-white/20 backdrop-blur-sm shadow-inner flex items-center justify-center">
+                        <i class="fa-solid fa-users text-2xl text-sky-300"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl font-extrabold tracking-tight text-white">English Family</h1>
+                            <span class="bg-sky-500/30 text-sky-200 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-sky-400/30">B1+ Assessment</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Comprehensive Language Proficiency Test</p>
+                    </div>
+                </div>
+
+                <!-- Student Metadata Inputs -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="bg-brand-800/90 px-3 py-1.5 rounded-xl border border-brand-600/40 flex items-center space-x-2">
+                        <i class="fa-regular fa-user text-sky-300 text-sm"></i>
+                        <input type="text" id="studentName" placeholder="Enter Full Name" 
+                            class="bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none w-36 sm:w-48 font-medium"
+                            oninput="saveMetadata()">
+                    </div>
+                    <div class="bg-brand-800/90 px-3 py-1.5 rounded-xl border border-brand-600/40 flex items-center space-x-2">
+                        <i class="fa-regular fa-calendar text-sky-300 text-sm"></i>
+                        <input type="date" id="testDate" 
+                            class="bg-transparent text-sm text-white focus:outline-none w-32 font-medium"
+                            onchange="saveMetadata()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Progress Bar -->
+            <div class="mt-3.5 pt-2.5 border-t border-brand-800/60 flex items-center gap-3">
+                <div class="flex-1 bg-slate-950 rounded-full h-2.5 overflow-hidden border border-brand-800 shadow-inner">
+                    <div id="progressBar" class="bg-gradient-to-r from-sky-400 to-teal-300 h-full w-0 transition-all duration-300 ease-out"></div>
+                </div>
+                <span id="progressText" class="text-xs font-semibold text-sky-200 min-w-[4.5rem] text-right">0 / 30 (0%)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-[77px] sm:top-[73px] z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 sm:space-x-3 overflow-x-auto py-2 scrollbar-none" id="tabNav">
+                <button onclick="switchTab(0)" id="tab-0" class="nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 bg-brand-50 text-brand-700">
+                    <i class="fa-solid fa-compass"></i>
+                    <span>Introduction</span>
+                </button>
+                <button onclick="switchTab(1)" id="tab-1" class="nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Part 1: Reading 1</span>
+                </button>
+                <button onclick="switchTab(2)" id="tab-2" class="nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-city"></i>
+                    <span>Part 2: Reading 2</span>
+                </button>
+                <button onclick="switchTab(3)" id="tab-3" class="nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-headphones"></i>
+                    <span>Part 3: Listening</span>
+                </button>
+                <button onclick="switchTab(4)" id="tab-4" disabled class="nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-400 cursor-not-allowed bg-slate-100 opacity-60">
+                    <i id="lockIcon" class="fa-solid fa-lock"></i>
+                    <span>Part 4: Results</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- PART 0: INTRODUCTION -->
+        <section id="page-0" class="tab-page animate-fadeIn space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="bg-sky-100 p-4 rounded-2xl text-brand-600">
+                        <i class="fa-solid fa-award text-3xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Welcome to English Family Assessment</h2>
+                        <p class="text-slate-500 text-sm">B1+ Intermediate Level Comprehensive Proficiency Evaluation</p>
+                    </div>
+                </div>
+
+                <div class="prose max-w-none text-slate-600 space-y-4">
+                    <p class="text-base leading-relaxed">
+                        This test is designed to measure your reading comprehension, vocabulary in context, and listening skills at the <strong>B1+ Independent User level</strong>. Please fill out your full name and today's date in the top bar before beginning.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 py-4">
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 text-brand-600 font-bold mb-2">
+                                    <i class="fa-solid fa-book-open text-lg"></i>
+                                    <h3>Part 1: Reading I</h3>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">10 Multiple Choice questions based on "The Future of Sustainable Urban Living".</p>
+                            </div>
+                            <span class="mt-4 text-xs font-semibold text-slate-400">10 Questions</span>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 text-brand-600 font-bold mb-2">
+                                    <i class="fa-solid fa-laptop-house text-lg"></i>
+                                    <h3>Part 2: Reading II</h3>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">10 Multiple Choice questions based on "The Evolution of Digital Nomad Culture".</p>
+                            </div>
+                            <span class="mt-4 text-xs font-semibold text-slate-400">10 Questions</span>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 text-brand-600 font-bold mb-2">
+                                    <i class="fa-solid fa-headphones text-lg"></i>
+                                    <h3>Part 3: Listening</h3>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">10 Questions on a 5-minute podcast interview in natural American English.</p>
+                            </div>
+                            <span class="mt-4 text-xs font-semibold text-slate-400">10 Questions</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-xl text-amber-900 text-sm">
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-circle-info text-amber-500 text-lg mt-0.5"></i>
+                            <div>
+                                <p class="font-bold">Instructions & Unlock Rules:</p>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-xs sm:text-sm text-amber-800">
+                                    <li>You can navigate freely between Parts 1, 2, and 3.</li>
+                                    <li><strong>Part 4 (Results)</strong> will automatically unlock once all <strong>30 questions</strong> are answered.</li>
+                                    <li>After completing the test, you can email your response to <strong>Danielenglishclasses23@gmail.com</strong> or copy your answer summary key.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button onclick="switchTab(1)" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md flex items-center space-x-2">
+                        <span>Begin Assessment (Part 1)</span>
+                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 1: READING 1 -->
+        <section id="page-1" class="tab-page hidden animate-fadeIn space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Reading Text Column -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:sticky lg:top-[140px] lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto">
+                    <div class="flex items-center space-x-2 text-brand-600 font-bold mb-3 text-sm">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>Reading Passage 1</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">The Future of Sustainable Urban Living</h3>
+                    <div class="prose text-slate-600 text-sm leading-relaxed space-y-3">
+                        <p>
+                            As global populations continue to concentrate in major cities, urban planners face unprecedented challenges. Traditional metropolises are overburdened by traffic congestion, rising pollution, and inefficient resource consumption. In response, modern architects and environmental scientists are collaborating to design "eco-cities" that integrate advanced technology with sustainable design principles.
+                        </p>
+                        <p>
+                            One of the most promising strategies involves the implementation of vertical forests and green roofs. Buildings covered in vegetation do far more than improve aesthetic appeal; they actively absorb carbon dioxide, lower ambient city temperatures, and reduce the energy required for air conditioning. Cities like Singapore and Milan have pioneered this approach, demonstrating that dense urban concrete can coexist with rich biological diversity.
+                        </p>
+                        <p>
+                            Additionally, public transportation systems are undergoing a dramatic transformation. Municipalities are replacing fossil-fuel buses with fully automated electric fleets and expanding dedicated micro-mobility lanes for bicycles and electric scooters. By prioritizing pedestrian walkways over private automobiles, city planners aim to reclaim urban space for community interaction while drastically decreasing carbon emissions.
+                        </p>
+                        <p>
+                            However, implementing these green initiatives requires substantial capital investment and long-term political commitment. Critics point out that sustainable housing developments often drive up real estate prices, potentially displacing lower-income residents—a phenomenon known as "green gentrification." To achieve genuine urban sustainability, policymakers must balance ecological innovations with social equity, ensuring that eco-friendly cities remain accessible to all socioeconomic groups.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Questions Column -->
+                <div class="lg:col-span-7 space-y-6" id="reading1QuestionsContainer">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: READING 2 -->
+        <section id="page-2" class="tab-page hidden animate-fadeIn space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Reading Text Column -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:sticky lg:top-[140px] lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto">
+                    <div class="flex items-center space-x-2 text-brand-600 font-bold mb-3 text-sm">
+                        <i class="fa-solid fa-laptop-house"></i>
+                        <span>Reading Passage 2</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">The Evolution of Digital Nomad Culture</h3>
+                    <div class="prose text-slate-600 text-sm leading-relaxed space-y-3">
+                        <p>
+                            Over the past decade, the traditional concept of an office workplace has experienced a profound shift. Fueled by high-speed internet, cloud computing, and portable hardware, millions of professionals have embraced a location-independent lifestyle. Known as "digital nomads," these individuals utilize technology to perform their jobs remotely while traveling the globe.
+                        </p>
+                        <p>
+                            Initially, digital nomadism was largely restricted to freelance software developers, writers, and graphic designers. Today, however, mainstream corporate enterprises frequently offer flexible work arrangements, allowing employees in marketing, human resources, and financial consulting to work from abroad. This shift has altered local economies, particularly in tropical destinations and historical European towns, where co-living spaces and laptop-friendly cafes have proliferated.
+                        </p>
+                        <p>
+                            While the lifestyle promises unmatched freedom and cultural immersion, it carries distinct drawbacks. Remote workers often struggle with social isolation, uncertain legal or tax obligations, and the blurring of boundaries between professional labor and personal leisure time. Constant relocation can also strain personal relationships and lead to burnout.
+                        </p>
+                        <p>
+                            To capitalize on this global workforce, dozens of nations have introduced specialized "digital nomad visas." These legal frameworks grant extended residency to remote earners who satisfy minimum income thresholds. As host countries compete to attract skilled international talent, digital nomadism is transforming from a niche subculture into an established pillar of the global labor economy.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Questions Column -->
+                <div class="lg:col-span-7 space-y-6" id="reading2QuestionsContainer">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: LISTENING -->
+        <section id="page-3" class="tab-page hidden animate-fadeIn space-y-6">
+            <!-- Speech Audio Engine Player Box -->
+            <div class="bg-gradient-to-r from-brand-900 via-slate-900 to-brand-800 text-white rounded-2xl p-6 shadow-md border border-brand-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center space-x-2 text-sky-300 font-semibold text-xs tracking-wider uppercase mb-1">
+                            <i class="fa-solid fa-podcast"></i>
+                            <span>Audio Podcast (Natural American English Voice)</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Episode 42: The Remote Work Renaissance</h3>
+                        <p class="text-xs text-slate-300 mt-1">Listen to the 5-minute conversation between Mark and Sarah to answer questions 21-30.</p>
+                    </div>
+
+                    <!-- Audio Controls -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button id="playBtn" onclick="toggleSpeech()" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2 text-sm shadow-lg">
+                            <i id="playIcon" class="fa-solid fa-play"></i>
+                            <span id="playBtnText">Play Audio</span>
+                        </button>
+                        <button onclick="stopSpeech()" class="bg-slate-700 hover:bg-slate-600 text-white font-medium px-3.5 py-2.5 rounded-xl transition text-sm">
+                            <i class="fa-solid fa-stop"></i>
+                        </button>
+                        <select id="rateSelect" onchange="changeSpeechRate(this.value)" class="bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2.5 focus:outline-none">
+                            <option value="0.9">0.9x Speed</option>
+                            <option value="1.0" selected>1.0x Normal</option>
+                            <option value="1.1">1.1x Speed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Audio Status Indicator -->
+                <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+                    <div class="flex items-center space-x-2">
+                        <span id="audioBadge" class="inline-block w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                        <span id="audioStatus">Audio Stopped</span>
+                    </div>
+                    <button onclick="toggleTranscriptModal()" class="text-sky-300 hover:underline flex items-center space-x-1">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Toggle Transcript Text</span>
+                    </button>
+                </div>
+
+                <!-- Full Transcript Collapsible / Box -->
+                <div id="transcriptBox" class="mt-4 hidden bg-slate-950/80 p-4 rounded-xl text-xs text-slate-300 space-y-3 max-h-60 overflow-y-auto border border-slate-800">
+                    <p><strong class="text-sky-400">Mark:</strong> Welcome back to 'Global Workplace Trends.' Today, we're discussing remote work culture with Sarah Jenkins, an expert in human resources and workforce mobility. Sarah, thanks for joining us!</p>
+                    <p><strong class="text-teal-400">Sarah:</strong> Thanks for having me, Mark! It's great to be here.</p>
+                    <p><strong class="text-sky-400">Mark:</strong> Sarah, over the past few years, we've seen companies move from temporary work-from-home policies to long-term flexible models. What do you see as the biggest structural benefit for businesses?</p>
+                    <p><strong class="text-teal-400">Sarah:</strong> Without a doubt, it's access to global talent pools. Previously, organizations were limited to hiring professionals within commuting distance of their physical headquarters. Now, tech enterprises in New York or London can hire top talent in Brazil, Poland, or Vietnam without requiring relocation.</p>
+                    <p><strong class="text-sky-400">Mark:</strong> That's a huge shift. But what about company culture? Doesn't remote work make team bonding and communication more difficult?</p>
+                    <p><strong class="text-teal-400">Sarah:</strong> It certainly can if leadership relies on outdated management styles. Successful remote companies prioritize asynchronous communication—meaning employees don't have to respond instantly—and they organize intentional annual retreats so team members can connect face-to-face.</p>
+                    <p><strong class="text-sky-400">Mark:</strong> Interesting! What advice would you give to employees who find it hard to disconnect at the end of the day?</p>
+                    <p><strong class="text-teal-400">Sarah:</strong> Setting strict boundaries is essential. Create a dedicated workspace at home, turn off notifications after working hours, and establish clear routines to transition from professional duties to personal life.</p>
+                    <p><strong class="text-sky-400">Mark:</strong> Excellent advice. Thank you for sharing your insights today, Sarah.</p>
+                    <p><strong class="text-teal-400">Sarah:</strong> My pleasure, Mark!</p>
+                </div>
+            </div>
+
+            <!-- Listening Questions List -->
+            <div id="listeningQuestionsContainer" class="space-y-6">
+                <!-- Dynamic rendering via JS -->
+            </div>
+        </section>
+
+        <!-- PART 4: RESULTS (LOCKED UNTIL ALL 30 ANSWERED) -->
+        <section id="page-4" class="tab-page hidden animate-fadeIn space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold">Assessment Completed</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-2">Test Performance Summary</h2>
+                        <p class="text-sm text-slate-500">Student: <span id="resStudentName" class="font-semibold text-slate-800">N/A</span> | Date: <span id="resTestDate" class="font-semibold text-slate-800">N/A</span></p>
+                    </div>
+
+                    <!-- Final Score Badge -->
+                    <div class="bg-gradient-to-br from-brand-600 to-brand-800 text-white px-6 py-4 rounded-2xl text-center shadow-lg">
+                        <span class="text-xs font-medium uppercase tracking-wider text-sky-200">Final Score</span>
+                        <div id="finalScoreText" class="text-3xl font-extrabold mt-0.5">0 / 30</div>
+                        <span id="finalScorePercent" class="text-xs font-semibold bg-white/20 px-2 py-0.5 rounded-full">0%</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons: Email & Copy -->
+                <div class="py-6 flex flex-wrap items-center gap-4 border-b border-slate-200">
+                    <button onclick="sendEmailResults()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-3 rounded-xl transition flex items-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Send to Danielenglishclasses23</span>
+                    </button>
+
+                    <button onclick="copyCompactAnswers()" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-3 rounded-xl transition flex items-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Copy Compact Summary Key</span>
+                    </button>
+
+                    <span id="copyToast" class="text-xs font-bold text-emerald-600 opacity-0 transition-opacity">Copied to clipboard!</span>
+                </div>
+
+                <!-- Detailed Answers Review -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4">Detailed Question Breakdown</h3>
+                    <div id="answersBreakdown" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p>© English Family Assessment System. Level B1+ CEFR standard.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT STATE MANAGEMENT & APPLICATION LOGIC -->
+    <script>
+        // --- TEST QUESTIONS DATA STORAGE ---
+        const questionsData = [
+            // PART 1: READING 1 (Q1 - Q10)
+            {
+                id: 1,
+                part: 1,
+                text: "What is the primary objective of urban planners designing modern 'eco-cities'?",
+                options: [
+                    "A) To demolish existing traditional buildings completely.",
+                    "B) To combine modern technology with sustainable environmental principles.",
+                    "C) To mandate electric scooter usage for all citizens.",
+                    "D) To convert all urban land into agricultural farms."
+                ],
+                correct: "B"
+            },
+            {
+                id: 2,
+                part: 1,
+                text: "According to the passage, vertical forests and green roofs help to:",
+                options: [
+                    "A) Reduce urban street noise levels only.",
+                    "B) Increase city real estate values for investors.",
+                    "C) Absorb carbon dioxide and reduce air conditioning energy needs.",
+                    "D) Eliminate the necessity for public transit systems."
+                ],
+                correct: "C"
+            },
+            {
+                id: 3,
+                part: 1,
+                text: "Which two cities are cited in the text as pioneers of vegetated architectural design?",
+                options: [
+                    "A) Singapore and Milan",
+                    "B) London and New York",
+                    "C) Paris and Tokyo",
+                    "D) Berlin and Madrid"
+                ],
+                correct: "A"
+            },
+            {
+                id: 4,
+                part: 1,
+                text: "How are municipalities transforming urban public transportation?",
+                options: [
+                    "A) By making private cars completely illegal in downtown zones.",
+                    "B) By substituting fossil-fuel buses with automated electric fleets.",
+                    "C) By building elevated highways across all historic districts.",
+                    "D) By eliminating bus routes in favor of train systems."
+                ],
+                correct: "B"
+            },
+            {
+                id: 5,
+                part: 1,
+                text: "The term 'green gentrification' in paragraph 4 refers to:",
+                options: [
+                    "A) The process of planting trees in poor rural areas.",
+                    "B) Sustainable housing developments rising in price and displacing poorer residents.",
+                    "C) Government grants awarded to green architecture firms.",
+                    "D) High tax penalties imposed on polluting industrial factories."
+                ],
+                correct: "B"
+            },
+            {
+                id: 6,
+                part: 1,
+                text: "What obstacle do municipalities face when implementing green initiatives?",
+                options: [
+                    "A) A total lack of technological solutions.",
+                    "B) Significant monetary investment and sustained political commitment.",
+                    "C) Resistance from international environmental agencies.",
+                    "D) Insufficient urban population density."
+                ],
+                correct: "B"
+            },
+            {
+                id: 7,
+                part: 1,
+                text: "What is the main idea of the second paragraph?",
+                options: [
+                    "A) Air conditioning is damaging city infrastructure.",
+                    "B) Green vegetation on buildings provides tangible ecological and cooling benefits.",
+                    "C) Singapore is the only successful eco-friendly city in Asia.",
+                    "D) Vertical forests are too expensive for European cities."
+                ],
+                correct: "B"
+            },
+            {
+                id: 8,
+                part: 1,
+                text: "The word 'unprecedented' in paragraph 1 is closest in meaning to:",
+                options: [
+                    "A) Commonplace or ordinary",
+                    "B) Never seen or experienced before",
+                    "C) Extremely simple to solve",
+                    "D) Temporarily delayed"
+                ],
+                correct: "B"
+            },
+            {
+                id: 9,
+                part: 1,
+                text: "It can be inferred from the text that achieving true urban sustainability requires:",
+                options: [
+                    "A) Ignoring socioeconomic disparities in housing.",
+                    "B) Balancing environmental advancements with social fairness.",
+                    "C) Focusing exclusively on technological innovations.",
+                    "D) Banning private property ownership in city centers."
+                ],
+                correct: "B"
+            },
+            {
+                id: 10,
+                part: 1,
+                text: "Which of the following best describes the author's tone toward sustainable eco-cities?",
+                options: [
+                    "A) Deeply cynical and dismissive",
+                    "B) Informative, balanced, and constructively critical",
+                    "C) Completely indifferent and neutral",
+                    "D) Aggressively argumentative and hostile"
+                ],
+                correct: "B"
+            },
+
+            // PART 2: READING 2 (Q11 - Q20)
+            {
+                id: 11,
+                part: 2,
+                text: "What key factors catalyzed the emergence of digital nomad culture over the last decade?",
+                options: [
+                    "A) Increased airline subsidies and free hotel bookings.",
+                    "B) High-speed internet, cloud computing, and portable hardware.",
+                    "C) Mandatory international corporate travel rules.",
+                    "D) Decline in global university enrollment rates."
+                ],
+                correct: "B"
+            },
+            {
+                id: 12,
+                part: 2,
+                text: "How has the demographic of digital nomads changed recently?",
+                options: [
+                    "A) It is now exclusively restricted to executive CEOs.",
+                    "B) It expanded from tech freelancers to corporate workers in diverse fields.",
+                    "C) It has decreased significantly due to lack of remote tools.",
+                    "D) It only includes travel bloggers and photographers."
+                ],
+                correct: "B"
+            },
+            {
+                id: 13,
+                part: 2,
+                text: "What effect has digital nomadism had on host destinations?",
+                options: [
+                    "A) Caused a decline in local restaurant businesses.",
+                    "B) Sparked the proliferation of co-living spaces and laptop-friendly cafes.",
+                    "C) Forced cities to close public internet hotspots.",
+                    "D) Led to the immediate closure of local heritage sites."
+                ],
+                correct: "B"
+            },
+            {
+                id: 14,
+                part: 2,
+                text: "Which of the following is highlighted as a personal drawback of digital nomadism?",
+                options: [
+                    "A) Strict daily office attendance requirements.",
+                    "B) Social isolation and blurred boundaries between work and leisure.",
+                    "C) Complete inability to travel between international borders.",
+                    "D) Excessive corporate supervision abroad."
+                ],
+                correct: "B"
+            },
+            {
+                id: 15,
+                part: 2,
+                text: "What purpose do 'digital nomad visas' serve?",
+                options: [
+                    "A) They grant tax exemption to local citizens.",
+                    "B) They provide extended legal residency to qualifying remote earners.",
+                    "C) They offer free international flights to freelancers.",
+                    "D) They mandate foreign workers to join local companies."
+                ],
+                correct: "B"
+            },
+            {
+                id: 16,
+                part: 2,
+                text: "The word 'proliferated' in paragraph 2 means:",
+                options: [
+                    "A) Decreased rapidly",
+                    "B) Increased or spread rapidly in number",
+                    "C) Remained strictly illegal",
+                    "D) Became overly expensive"
+                ],
+                correct: "B"
+            },
+            {
+                id: 17,
+                part: 2,
+                text: "Why are nations competing to create flexible visa options for remote workers?",
+                options: [
+                    "A) To attract skilled international talent and boost revenue.",
+                    "B) To discourage tourism in metropolitan areas.",
+                    "C) To force foreign workers to buy permanent homes.",
+                    "D) To limit internet bandwidth consumption."
+                ],
+                correct: "A"
+            },
+            {
+                id: 18,
+                part: 2,
+                text: "What can be inferred about the future of digital nomadism from the text?",
+                options: [
+                    "A) It will disappear as offices reopen worldwide.",
+                    "B) It is evolving into a permanent component of the global economy.",
+                    "C) It will remain limited only to high-income freelancers.",
+                    "D) Governments will ban remote work across borders."
+                ],
+                correct: "B"
+            },
+            {
+                id: 19,
+                part: 2,
+                text: "Which challenge relates to legal and financial aspects for remote workers?",
+                options: [
+                    "A) Unclear legal tax obligations when working in foreign countries.",
+                    "B) Lack of international banking applications.",
+                    "C) Inability to purchase software licenses abroad.",
+                    "D) High charges for public transit tickets."
+                ],
+                correct: "A"
+            },
+            {
+                id: 20,
+                part: 2,
+                text: "The main idea of the passage as a whole is:",
+                options: [
+                    "A) Freelance graphic designers are replacing corporate employees.",
+                    "B) Digital nomadism has grown from a niche trend into a recognized global work model with distinct benefits and challenges.",
+                    "C) Living in tropical destinations is mandatory for tech professionals.",
+                    "D) Cloud computing is too dangerous for business security."
+                ],
+                correct: "B"
+            },
+
+            // PART 3: LISTENING (Q21 - Q30)
+            {
+                id: 21,
+                part: 3,
+                text: "Who are the speakers in the recorded interview podcast?",
+                options: [
+                    "A) Mark (Podcast Host) and Sarah Jenkins (HR Expert)",
+                    "B) Mark (Travel Agent) and Sarah (University Student)",
+                    "C) David (Software Developer) and Sarah (Company Owner)",
+                    "D) Mark (Architect) and Sarah (Urban Designer)"
+                ],
+                correct: "A"
+            },
+            {
+                id: 22,
+                part: 3,
+                text: "According to Sarah, what is the single biggest advantage of remote hiring for companies?",
+                options: [
+                    "A) Lower internet subscription expenses.",
+                    "B) Access to a global talent pool without geographic limits.",
+                    "C) Total elimination of corporate taxes.",
+                    "D) Shorter working hours for management."
+                ],
+                correct: "B"
+            },
+            {
+                id: 23,
+                part: 3,
+                text: "Which countries are specifically mentioned as sources of top remote talent?",
+                options: [
+                    "A) Japan, Germany, and Canada",
+                    "B) Brazil, Poland, and Vietnam",
+                    "C) Spain, Italy, and Mexico",
+                    "D) Australia, India, and France"
+                ],
+                correct: "B"
+            },
+            {
+                id: 24,
+                part: 3,
+                text: "What communication strategy does Sarah recommend for successful remote organizations?",
+                options: [
+                    "A) Requiring immediate replies to every text message.",
+                    "B) Asynchronous communication allowing flexible response times.",
+                    "C) Holding continuous 8-hour daily video conferences.",
+                    "D) Banning written communication completely."
+                ],
+                correct: "B"
+            },
+            {
+                id: 25,
+                part: 3,
+                text: "How do effective remote companies foster team bonding according to Sarah?",
+                options: [
+                    "A) By forcing employees to live in the same city.",
+                    "B) By hosting intentional annual in-person retreats.",
+                    "C) By sending daily homework assignments to staff.",
+                    "D) By monitoring employees through webcams."
+                ],
+                correct: "B"
+            },
+            {
+                id: 26,
+                part: 3,
+                text: "What common difficulty do remote workers experience at home?",
+                options: [
+                    "A) Finding reliable electricity.",
+                    "B) Disconnecting from work responsibilities at the end of the day.",
+                    "C) Accessing cloud databases.",
+                    "D) Learning foreign languages."
+                ],
+                correct: "B"
+            },
+            {
+                id: 27,
+                part: 3,
+                text: "What practical recommendation does Sarah offer to maintain work-life balance?",
+                options: [
+                    "A) Work from bed to stay relaxed.",
+                    "B) Create a dedicated home workspace and turn off notifications after work.",
+                    "C) Answer work emails late at night to get ahead.",
+                    "D) Avoid taking any vacation time during the year."
+                ],
+                correct: "B"
+            },
+            {
+                id: 28,
+                part: 3,
+                text: "What type of management style does Sarah criticize as ineffective for remote work?",
+                options: [
+                    "A) Supportive and flexible leadership",
+                    "B) Outdated, micro-managing leadership styles",
+                    "C) Asynchronous task delegation",
+                    "D) Result-oriented performance reviews"
+                ],
+                correct: "B"
+            },
+            {
+                id: 29,
+                part: 3,
+                text: "What is the overall tone of the conversation between Mark and Sarah?",
+                options: [
+                    "A) Professional, constructive, and insightful",
+                    "B) Hostile and highly argumentative",
+                    "C) Humorous and completely unstructured",
+                    "D) Pessimistic and discouraging"
+                ],
+                correct: "A"
+            },
+            {
+                id: 30,
+                part: 3,
+                text: "What conclusion can be drawn regarding remote work culture from the interview?",
+                options: [
+                    "A) It is a temporary trend that will fade next year.",
+                    "B) With proper boundaries and management, remote work yields major talent and productivity advantages.",
+                    "C) It only benefits large corporate tech companies in London.",
+                    "D) It destroys team relationships permanently."
+                ],
+                correct: "B"
+            }
+        ];
+
+        // --- APP STATE ---
+        let currentTab = 0;
+        let userAnswers = {};
+        let studentMetadata = {
+            name: '',
+            date: new Date().toISOString().split('T')[0]
+        };
+
+        // --- SPEECH SYNTHESIS ENGINE AUDIO PLAYER STATE ---
+        let synth = window.speechSynthesis;
+        let utterance = null;
+        let isSpeaking = false;
+        let speechRate = 1.0;
+
+        const transcriptText = `
+            Mark: Welcome back to Global Workplace Trends. Today, we are discussing remote work culture with Sarah Jenkins, an expert in human resources and workforce mobility. Sarah, thanks for joining us!
+            Sarah: Thanks for having me, Mark! It is great to be here.
+            Mark: Sarah, over the past few years, we have seen companies move from temporary work-from-home policies to long-term flexible models. What do you see as the biggest structural benefit for businesses?
+            Sarah: Without a doubt, it is access to global talent pools. Previously, organizations were limited to hiring professionals within commuting distance of their physical headquarters. Now, tech enterprises in New York or London can hire top talent in Brazil, Poland, or Vietnam without requiring relocation.
+            Mark: That is a huge shift. But what about company culture? Does not remote work make team bonding and communication more difficult?
+            Sarah: It certainly can if leadership relies on outdated management styles. Successful remote companies prioritize asynchronous communication—meaning employees do not have to respond instantly—and they organize intentional annual retreats so team members can connect face-to-face.
+            Mark: Interesting! What advice would you give to employees who find it hard to disconnect at the end of the day?
+            Sarah: Setting strict boundaries is essential. Create a dedicated workspace at home, turn off notifications after working hours, and establish clear routines to transition from professional duties to personal life.
+            Mark: Excellent advice. Thank you for sharing your insights today, Sarah.
+            Sarah: My pleasure, Mark!
+        `;
+
+        // Initialize application on window load
+        window.onload = function() {
+            // Set initial date in input
+            document.getElementById('testDate').value = studentMetadata.date;
+            
+            // Render questions into DOM
+            renderQuestions();
+
+            // Setup audio voices if SpeechSynthesis is ready
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    // Pre-warm voices
+                    window.speechSynthesis.getVoices();
+                };
+            }
+        };
+
+        // Save student metadata
+        function saveMetadata() {
+            studentMetadata.name = document.getElementById('studentName').value.trim();
+            studentMetadata.date = document.getElementById('testDate').value;
+        }
+
+        // Render Questions for all Parts
+        function renderQuestions() {
+            const p1Container = document.getElementById('reading1QuestionsContainer');
+            const p2Container = document.getElementById('reading2QuestionsContainer');
+            const p3Container = document.getElementById('listeningQuestionsContainer');
+
+            p1Container.innerHTML = '';
+            p2Container.innerHTML = '';
+            p3Container.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const card = createQuestionCardHTML(q, index + 1);
+                if (q.part === 1) p1Container.innerHTML += card;
+                else if (q.part === 2) p2Container.innerHTML += card;
+                else if (q.part === 3) p3Container.innerHTML += card;
+            });
+        }
+
+        function createQuestionCardHTML(q, qNum) {
+            const isSelected = userAnswers[q.id];
+            
+            let optionsHTML = q.options.map((opt, optIndex) => {
+                const letter = String.fromCharCode(65 + optIndex);
+                const activeClass = (isSelected === letter) 
+                    ? 'border-brand-600 bg-brand-50/80 text-brand-900 font-semibold ring-2 ring-brand-500/20' 
+                    : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700';
+
+                return `
+                    <button onclick="selectOption(${q.id}, '${letter}')" 
+                        class="w-full text-left p-3.5 rounded-xl border ${activeClass} transition-all duration-150 flex items-start space-x-3 text-xs sm:text-sm">
+                        <span class="w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs ${isSelected === letter ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'} flex-shrink-0">
+                            ${letter}
+                        </span>
+                        <span class="mt-0.5 leading-snug">${opt.substring(3)}</span>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div id="q-card-${q.id}" class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-bold">Question ${qNum} of 30</span>
+                        ${isSelected ? '<span class="text-xs text-emerald-600 font-semibold flex items-center space-x-1"><i class="fa-solid fa-circle-check"></i><span>Answered</span></span>' : ''}
+                    </div>
+                    <p class="font-bold text-slate-900 text-sm sm:text-base">${q.text}</p>
+                    <div class="space-y-2.5">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle Option Selection
+        function selectOption(qId, letter) {
+            userAnswers[qId] = letter;
+            renderQuestions();
+            updateProgress();
+        }
+
+        // Update Global Progress Bar and Check Completion
+        function updateProgress() {
+            const total = questionsData.length; // 30
+            const answeredCount = Object.keys(userAnswers).length;
+            const percentage = Math.round((answeredCount / total) * 100);
+
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = `${answeredCount} / ${total} (${percentage}%)`;
+
+            // Lock / Unlock Part 4
+            const tab4Btn = document.getElementById('tab-4');
+            const lockIcon = document.getElementById('lockIcon');
+
+            if (answeredCount === total) {
+                tab4Btn.disabled = false;
+                tab4Btn.classList.remove('text-slate-400', 'cursor-not-allowed', 'bg-slate-100', 'opacity-60');
+                tab4Btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'cursor-pointer');
+                lockIcon.className = 'fa-solid fa-lock-open text-emerald-500';
+            } else {
+                tab4Btn.disabled = true;
+                tab4Btn.classList.add('text-slate-400', 'cursor-not-allowed', 'bg-slate-100', 'opacity-60');
+                lockIcon.className = 'fa-solid fa-lock';
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabIndex) {
+            if (tabIndex === 4 && Object.keys(userAnswers).length < questionsData.length) {
+                return; // Prevent switching if locked
+            }
+
+            currentTab = tabIndex;
+            
+            // Hide all pages
+            document.querySelectorAll('.tab-page').forEach((page, i) => {
+                if (i === tabIndex) {
+                    page.classList.remove('hidden');
+                } else {
+                    page.classList.add('hidden');
+                }
+            });
+
+            // Update tab button styles
+            document.querySelectorAll('.nav-tab').forEach((btn, i) => {
+                if (i === tabIndex) {
+                    btn.className = 'nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 bg-brand-50 text-brand-700 border border-brand-200';
+                } else {
+                    if (i === 4 && Object.keys(userAnswers).length < questionsData.length) {
+                        btn.className = 'nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-400 cursor-not-allowed bg-slate-100 opacity-60';
+                    } else {
+                        btn.className = 'nav-tab text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all duration-150 flex items-center space-x-2 text-slate-600 hover:bg-slate-100';
+                    }
+                }
+            });
+
+            // If entering results tab, calculate & render results
+            if (tabIndex === 4) {
+                renderResults();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- SPEECH SYNTHESIS CONTROLS (AMERICAN ENGLISH AUDIO) ---
+        function toggleSpeech() {
+            if (!('speechSynthesis' in window)) {
+                alert("Speech Synthesis is not supported in your browser.");
+                return;
+            }
+
+            if (isSpeaking) {
+                if (synth.paused) {
+                    synth.resume();
+                    isSpeaking = true;
+                    updateAudioUI(true);
+                } else {
+                    synth.pause();
+                    isSpeaking = false;
+                    updateAudioUI(false, "Paused");
+                }
+            } else {
+                stopSpeech();
+                utterance = new SpeechSynthesisUtterance(transcriptText);
+                utterance.rate = speechRate;
+                
+                // Select American English Voice if available
+                const voices = synth.getVoices();
+                const americanVoice = voices.find(v => v.lang.includes('en-US') || v.name.includes('US') || v.name.includes('American'));
+                if (americanVoice) {
+                    utterance.voice = americanVoice;
+                }
+                utterance.lang = 'en-US';
+
+                utterance.onend = function() {
+                    isSpeaking = false;
+                    updateAudioUI(false, "Audio Finished");
+                };
+
+                utterance.onerror = function() {
+                    isSpeaking = false;
+                    updateAudioUI(false, "Audio Error");
+                };
+
+                synth.speak(utterance);
+                isSpeaking = true;
+                updateAudioUI(true);
+            }
+        }
+
+        function stopSpeech() {
+            if ('speechSynthesis' in window) {
+                synth.cancel();
+                isSpeaking = false;
+                updateAudioUI(false, "Audio Stopped");
+            }
+        }
+
+        function changeSpeechRate(rate) {
+            speechRate = parseFloat(rate);
+            if (isSpeaking) {
+                stopSpeech();
+                toggleSpeech();
+            }
+        }
+
+        function updateAudioUI(playing, statusText = "Playing Audio...") {
+            const playBtnText = document.getElementById('playBtnText');
+            const playIcon = document.getElementById('playIcon');
+            const audioBadge = document.getElementById('audioBadge');
+            const audioStatus = document.getElementById('audioStatus');
+
+            if (playing) {
+                playBtnText.innerText = "Pause Audio";
+                playIcon.className = "fa-solid fa-pause";
+                audioBadge.className = "inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+                audioStatus.innerText = "Playing Podcast (en-US)";
+            } else {
+                playBtnText.innerText = "Play Audio";
+                playIcon.className = "fa-solid fa-play";
+                audioBadge.className = "inline-block w-2.5 h-2.5 rounded-full bg-slate-500";
+                audioStatus.innerText = statusText;
+            }
+        }
+
+        function toggleTranscriptModal() {
+            const box = document.getElementById('transcriptBox');
+            box.classList.toggle('hidden');
+        }
+
+        // --- RESULTS CALCULATION & RENDERING ---
+        function renderResults() {
+            saveMetadata();
+            document.getElementById('resStudentName').innerText = studentMetadata.name || 'Student Name Not Specified';
+            document.getElementById('resTestDate').innerText = studentMetadata.date || 'Date Not Specified';
+
+            let correctCount = 0;
+            const breakdownContainer = document.getElementById('answersBreakdown');
+            breakdownContainer.innerHTML = '';
+
+            questionsData.forEach((q, idx) => {
+                const uAns = userAnswers[q.id] || 'N/A';
+                const isCorrect = (uAns === q.correct);
+                if (isCorrect) correctCount++;
+
+                const cardHTML = `
+                    <div class="p-4 rounded-xl border ${isCorrect ? 'border-emerald-200 bg-emerald-50/50' : 'border-rose-200 bg-rose-50/50'} flex items-start justify-between">
+                        <div class="space-y-1 pr-2">
+                            <span class="text-xs font-bold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}">
+                                Question ${idx + 1} (${q.part === 1 ? 'Reading 1' : q.part === 2 ? 'Reading 2' : 'Listening'})
+                            </span>
+                            <p class="text-xs text-slate-700 line-clamp-2">${q.text}</p>
+                            <div class="text-xs pt-1">
+                                <span class="font-medium text-slate-600">Your Answer: <strong>${uAns}</strong></span>
+                                ${!isCorrect ? `<span class="ml-2 font-medium text-slate-500">| Correct: <strong class="text-emerald-700">${q.correct}</strong></span>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            ${isCorrect ? '<span class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">✓</span>' : '<span class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs">✗</span>'}
+                        </div>
+                    </div>
+                `;
+                breakdownContainer.innerHTML += cardHTML;
+            });
+
+            const scorePercent = Math.round((correctCount / questionsData.length) * 100);
+            document.getElementById('finalScoreText').innerText = `${correctCount} / ${questionsData.length}`;
+            document.getElementById('finalScorePercent').innerText = `${scorePercent}% Score`;
+        }
+
+        // --- SUBMISSION ACTIONS ---
+        function generateCompactSummary() {
+            let summary = `ENGLISH FAMILY B1+ TEST RESULTS\n`;
+            summary += `Student: ${studentMetadata.name || 'N/A'}\n`;
+            summary += `Date: ${studentMetadata.date || 'N/A'}\n`;
+            
+            let correctCount = 0;
+            let keyArray = [];
+
+            questionsData.forEach((q, idx) => {
+                const uAns = userAnswers[q.id] || 'N/A';
+                const isCorrect = (uAns === q.correct);
+                if (isCorrect) correctCount++;
+                const symbol = isCorrect ? '✓' : `✗(Ans:${q.correct})`;
+                keyArray.push(`${idx + 1}.${uAns}${symbol}`);
+            });
+
+            const scorePercent = Math.round((correctCount / questionsData.length) * 100);
+            summary += `Score: ${correctCount}/30 (${scorePercent}%)\n\n`;
+            summary += `ANSWER KEY:\n` + keyArray.join(' | ');
+            
+            return { summary, correctCount, scorePercent };
+        }
+
+        function copyCompactAnswers() {
+            const data = generateCompactSummary();
+            
+            // Execute fallback copy for strict environments
+            const tempInput = document.createElement('textarea');
+            tempInput.value = data.summary;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('copyToast');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        function sendEmailResults() {
+            const data = generateCompactSummary();
+            const recipient = "Danielenglishclasses23@gmail.com";
+            const subject = encodeURIComponent(`B1+ Test Submission - ${studentMetadata.name || 'Student'}`);
+            const body = encodeURIComponent(data.summary);
+            
+            window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
